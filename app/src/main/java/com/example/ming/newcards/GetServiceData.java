@@ -25,44 +25,79 @@ import java.util.TimeZone;
 public class GetServiceData {
 
     private String weather_api_key = "b9ab3488c011ac84e109bf20d600b6d7";
-    private String mbta = "http://realtime.mbta.com/developer/api/v2/stopsbylocation?api_key=wX9NwuHnZU2ToO7GmGR9uw&lat=42.346961&lon=-71.076640&format=json";
 
     public GetServiceData()
     {
 
     }
 
-    public int DebugMethod()
-    {
-        int debug = 34;
-        return debug;
+    public ArrayList<Forcast> GetForcast(String location, String mode)  {
+        if (mode == Constants.Hours)
+            return GetDayForcast(location);
+        else if (mode == Constants.Days)
+            return GetHourlyForcast(location);
+        else
+            return new ArrayList<Forcast>();
     }
 
-    public ArrayList<Forcast> GetForcast() throws  JSONException {
+    private ArrayList<Forcast> GetDayForcast(String location)
+    {
+        ArrayList<Forcast> fList = new ArrayList<>();
 
-        ArrayList<Forcast> fList = new ArrayList<Forcast>();
-        String weather = "http://api.openweathermap.org/data/2.5/forecast?q=Malden,us&mode=json&appid=44db6a862fba0b067b1930da0d769e98";
-        JSONObject forcast = getJSON(weather);
-        JSONArray forcastArray = forcast.getJSONArray("list");
-        for (int i = 0; i < forcastArray.length(); i++)
+        try {
+            String weather = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + location + "&mode=json&units=metric&cnt=7&appid=" + weather_api_key;
+            JSONObject forcast = getJSON(location);
+            JSONArray forcastArray = null;
+
+            forcastArray = forcast.getJSONArray("list");
+
+            for (int i = 0; i < forcastArray.length(); i++) {
+                JSONObject dayForcast = forcastArray.getJSONObject(i);
+                int dt = dayForcast.getInt("dt");
+                Forcast f = new Forcast();
+                Date date = new Date(dt * 1000L); // *1000 is to convert seconds to milliseconds
+                f.time = date;
+
+                String weatherDescription = forcastArray.getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("description");
+                Double temp = dayForcast.getJSONObject("main").getDouble("temp");
+                f.clouds = weatherDescription;
+                f.temperature = temp;
+                fList.add(f);
+            }
+        }
+        catch (Exception e)
         {
-            JSONObject dayForcast = forcastArray.getJSONObject(i);
-            int dt = dayForcast.getInt("dt");
-            Forcast f = new Forcast();
+            e.printStackTrace();
+        }
+        return fList;
+    }
 
-            Date date = new Date(dt*1000L); // *1000 is to convert seconds to milliseconds
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z"); // the format of your date
-            sdf.setTimeZone(TimeZone.getTimeZone("UTC-5")); // give a timezone reference for formating (see comment at the bottom
-            String formattedDate = sdf.format(date);
-            System.out.println(formattedDate);
+    private ArrayList<Forcast> GetHourlyForcast(String location)
+    {
+        ArrayList<Forcast> fList = new ArrayList<Forcast>();
+        try {
+            String weather = "http://api.openweathermap.org/data/2.5/forecast?q=" + location + "&mode=json&appid=" + weather_api_key;
+            JSONObject forcast = getJSON(weather);
+            JSONArray forcastArray = null;
 
-            f.time = date;
+            forcastArray = forcast.getJSONArray("list");
 
-            String weatherDescription = forcastArray.getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("description");
-            Double temp = dayForcast.getJSONObject("main").getDouble("temp");
-            f.clouds = weatherDescription;
-            f.temperature = temp;
-            fList.add(f);
+            for (int i = 0; i < forcastArray.length(); i++) {
+                JSONObject dayForcast = forcastArray.getJSONObject(i);
+                int dt = dayForcast.getInt("dt");
+                Forcast f = new Forcast();
+                Date date = new Date(dt * 1000L); // *1000 is to convert seconds to milliseconds
+                f.time = date;
+
+                String weatherDescription = forcastArray.getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("description");
+                Double temp = dayForcast.getJSONObject("main").getDouble("temp");
+                f.clouds = weatherDescription;
+                f.temperature = temp;
+                fList.add(f);
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
         }
 
         return fList;

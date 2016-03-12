@@ -31,10 +31,9 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     public void testMethod()
     {
         GetServiceData data = new GetServiceData();
-        data.DebugMethod();
 
-        try { data.GetForcast();}
-        catch(JSONException e)
+        try { data.GetForcast("Malden, us", Constants.Hours);}
+        catch(Exception e)
         { e.getMessage(); }
     }
 

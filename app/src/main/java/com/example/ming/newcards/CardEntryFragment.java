@@ -44,6 +44,5 @@ public class CardEntryFragment extends Fragment {
         String sText2 = (String) text2.getText().toString();
 
         CardViewActivity middleNode = (CardViewActivity) getActivity();
-        middleNode.AddNewCard(sText1, sText2);
     }
 }
