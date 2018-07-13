@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">NewCards</string>
+    <string name="action_clear">Clear Cards</string>
+</resources>
