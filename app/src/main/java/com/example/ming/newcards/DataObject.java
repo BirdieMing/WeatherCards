@@ -9,20 +9,25 @@ public class DataObject {
     private String mText1;
     private String mText2;
     private Date date;
-    private String weatherDescription;
 
-    private double kelvin;
-    private double celcius;
-    private double fahrenheit;
+    private String main;
+    private String description;
+    private String icon;
 
-    DataObject(Date date, double kelvin, String weatherDescription)
+    private double day;
+    private double min;
+    private double max;
+
+    DataObject(Date date, double day, double min, double max, String main, String description, String icon)
     {
         this.date = date;
-        this.kelvin = kelvin;
-        this.weatherDescription = weatherDescription;
+        this.day = (day - 273.15) * 9.0/5 + 32;
+        this.min = (min - 273.15) * 9.0/5 + 32;
+        this.max = (max - 273.15) * 9.0/5 + 32;
+        this.description = description;
 
-        this.fahrenheit = (this.kelvin - 273.15) * 9.0/5 + 32;
-        this.celcius = (this.kelvin - 273.15);
+        //this.fahrenheit = (this.kelvin - 273.15) * 9.0/5 + 32;
+        //this.celcius = (this.kelvin - 273.15);
     }
 
     public String getTime()
@@ -33,21 +38,33 @@ public class DataObject {
         return formattedDate;
     }
 
-    public String getTemp(int tempFormat) {
-        String temp = "";
-
-        if (tempFormat == 1)
-            temp = "K: " + Double.toString(kelvin);
-        else if (tempFormat == 2)
-            temp = "C: " + Double.toString(celcius);
-        else if (tempFormat == 3)
-            temp = "F: " + Double.toString(fahrenheit);
-
-        return temp;
+    public String getDay()
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE MM-dd"); // the format of your date
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC-5")); // give a timezone reference for formating (see comment at the bottom
+        String formattedDate = sdf.format(date);
+        return formattedDate;
     }
+
+
 
     public String getWeatherDescription()
     {
-        return this.weatherDescription;
+        return this.description;
+    }
+
+    public String getDayTemp()
+    {
+        return Double.toString(this.day);
+    }
+
+    public String getMaxTemp()
+    {
+        return Double.toString(this.max);
+    }
+
+    public String getMinTemp()
+    {
+        return Double.toString(this.min);
     }
 }

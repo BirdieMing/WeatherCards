@@ -61,7 +61,8 @@ public class CardListFragment extends Fragment {
 
     public void Refresh(String location, String mode)
     {
-        listObject = getDataSet(location, mode);
+        listObject.clear();
+        listObject.addAll(getDataSet(location, mode));
         mAdapter.notifyDataSetChanged();
     }
 
@@ -78,7 +79,7 @@ public class CardListFragment extends Fragment {
 
         for (int index = 0; index < fList.size(); index++) {
             Forcast f = fList.get(index);
-            DataObject d = new DataObject(f.time, f.day, f.weatherDescription);
+            DataObject d = new DataObject(f.time, f.day, f.min, f.max, f.weatherMain, f.weatherDescription, f.weatherIcon);
             results.add(index, d);
         }
         return results;
