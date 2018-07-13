@@ -25,12 +25,11 @@ public class CardListFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     String LOG_TAG = "CardListFragment";
-    String mode = Constants.Hours;
+    String mode = Constants.Days;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         listObject = getDataSet("Malden,us", "Day");
-        Log.d("list created", "list created 2");
         super.onCreate(savedInstanceState);
     }
 
@@ -44,7 +43,7 @@ public class CardListFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MyRecyclerViewAdapter(listObject, getActivity(), getContext());
+        mAdapter = new MyRecyclerViewAdapter(listObject, getActivity(), getContext(), mode);
         mRecyclerView.setAdapter(mAdapter);
 
 
@@ -61,6 +60,7 @@ public class CardListFragment extends Fragment {
 
     public void Refresh(String location, String mode)
     {
+        this.mode = mode;
         listObject.clear();
         listObject.addAll(getDataSet(location, mode));
         mAdapter.notifyDataSetChanged();

@@ -1,6 +1,10 @@
 package com.example.ming.newcards;
 
+import android.graphics.drawable.Drawable;
+
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -21,11 +25,13 @@ public class DataObject {
     DataObject(Date date, double day, double min, double max, String main, String description, String icon)
     {
         this.date = date;
-        this.day = (day - 273.15) * 9.0/5 + 32;
-        this.min = (min - 273.15) * 9.0/5 + 32;
-        this.max = (max - 273.15) * 9.0/5 + 32;
-        this.description = description;
 
+        this.day = (int) (day * 9.0/5 + 32);
+        this.min = (int) (min * 9.0/5 + 32);
+        this.max = (int) (max * 9.0/5 + 32);
+        this.description = description;
+        this.icon = icon;
+        this.main = main;
         //this.fahrenheit = (this.kelvin - 273.15) * 9.0/5 + 32;
         //this.celcius = (this.kelvin - 273.15);
     }
@@ -40,7 +46,7 @@ public class DataObject {
 
     public String getDay()
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE MM-dd"); // the format of your date
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE M-dd"); // the format of your date
         sdf.setTimeZone(TimeZone.getTimeZone("UTC-5")); // give a timezone reference for formating (see comment at the bottom
         String formattedDate = sdf.format(date);
         return formattedDate;
@@ -48,23 +54,38 @@ public class DataObject {
 
 
 
-    public String getWeatherDescription()
+    public String getDescription()
     {
-        return this.description;
+        return this.description + "\n" + "Day: " + getDayTemp() + " Max: " + getMaxTemp() + " Min: " + getMinTemp();
     }
 
     public String getDayTemp()
     {
-        return Double.toString(this.day);
+        NumberFormat nf = DecimalFormat.getInstance();
+        nf.setMaximumFractionDigits(0);
+        String str = nf.format(this.day);
+        return str;
     }
 
     public String getMaxTemp()
     {
-        return Double.toString(this.max);
+        NumberFormat nf = DecimalFormat.getInstance();
+        nf.setMaximumFractionDigits(0);
+        String str = nf.format(this.max);
+        return str;
     }
 
     public String getMinTemp()
     {
-        return Double.toString(this.min);
+        NumberFormat nf = DecimalFormat.getInstance();
+        nf.setMaximumFractionDigits(0);
+        String str = nf.format(this.min);
+        return str;
     }
+
+    public String getIcon()
+    {
+        return this.icon;
+    }
+
 }
