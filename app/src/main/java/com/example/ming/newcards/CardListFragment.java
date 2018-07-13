@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 //TODO enter place. Dynamically load images. Half day skip.
 //TODO notification for rain or snow
@@ -62,6 +63,9 @@ public class CardListFragment extends Fragment {
     public void Refresh(String location, String mode)
     {
         listObject = getDataSet(location, mode);
+        DataObject o = new DataObject(new Date(), 1, "hello");
+        //listObject.add(o);
+        //mAdapter = new MyRecyclerViewAdapter(listObject, getActivity(), getContext());
         mAdapter.notifyDataSetChanged();
     }
 

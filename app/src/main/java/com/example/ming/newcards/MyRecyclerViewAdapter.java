@@ -36,6 +36,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
             title = (TextView) itemView.findViewById(R.id.title);
             detail = (TextView) itemView.findViewById(R.id.detail);
             picture = (ImageView) itemView.findViewById(R.id.picture);
+
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
@@ -75,21 +76,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
 
         holder.title.setText(time);
         holder.detail.setText(weatherDescription + " " + temp);
-/*
-       TakePicture p = new TakePicture(this.act, this.con);
-        Bitmap b = null;
-        try {
-            b = p.GetPicture(weatherDescription);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (b != null)
-            holder.picture.setImageBitmap(b);
-        else
-*/
-
-            holder.picture.setImageBitmap(BitmapFactory.decodeResource(con.getResources(), R.drawable.mountain));
+        holder.picture.setImageBitmap(BitmapFactory.decodeResource(con.getResources(), R.drawable.mountain));
     }
 
     public void addItem(DataObject dataObj, int index) {
