@@ -1,12 +1,9 @@
-package com.example.ming.newcards;
+package com.weather.ming.newcards;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
 import android.util.Log;
 import android.test.suitebuilder.annotation.SmallTest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 /**

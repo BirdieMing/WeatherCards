@@ -1,4 +1,4 @@
-package com.example.ming.newcards;
+package com.weather.ming.newcards;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 //TODO enter place. Dynamically load images. Half day skip.
 //TODO notification for rain or snow
@@ -46,16 +45,6 @@ public class CardListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new MyRecyclerViewAdapter(listObject, getActivity(), getContext(), mode);
         mRecyclerView.setAdapter(mAdapter);
-
-
-
-
-        // Code to Add an item with default animation
-        //((MyRecyclerViewAdapter) mAdapter).addItem(obj, index);
-
-        // Code to remove an item with default animation
-        //((MyRecyclerViewAdapter) mAdapter).deleteItem(index);
-        // Inflate the layout for this fragment
         return rootView;
     }
 
@@ -63,7 +52,8 @@ public class CardListFragment extends Fragment {
     {
         this.mode = mode;
         listObject.clear();
-        listObject.addAll(getDataSet(location, mode));
+        ArrayList<DataObject> newList = getDataSet(location, mode);
+        listObject.addAll(newList);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -80,7 +70,7 @@ public class CardListFragment extends Fragment {
 
         for (int index = 0; index < fList.size(); index++) {
             Forcast f = fList.get(index);
-            DataObject d = new DataObject(f.time, f.day, f.min, f.max, f.weatherMain, f.weatherDescription, f.weatherIcon);
+            DataObject d = new DataObject(f.time, f.day, f.min, f.max, f.weatherMain, f.weatherDescription, f.weatherIcon, mode);
             results.add(index, d);
         }
         return results;

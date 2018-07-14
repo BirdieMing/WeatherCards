@@ -4,7 +4,7 @@ android {
     compileSdkVersion 23
 
     defaultConfig {
-        applicationId "com.example.ming.newcards"
+        applicationId "com.weather.ming.newcards"
         minSdkVersion 23
         targetSdkVersion 23
         versionCode 1

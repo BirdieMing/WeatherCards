@@ -1,4 +1,4 @@
-package com.example.ming.newcards;
+package com.weather.ming.newcards;
 
 /**
  * Created by Ming on 2/23/2016.

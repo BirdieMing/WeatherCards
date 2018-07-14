@@ -1,8 +1,7 @@
-package com.example.ming.newcards;
+package com.weather.ming.newcards;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
@@ -74,11 +73,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
     public void onBindViewHolder(DataObjectHolder holder, int position) {
 
         String time = "";
-        if (this.mode == Constants.Hours)
-            time = mDataset.get(position).getTime();
-        else
-            time = mDataset.get(position).getDay();
-
+        time = mDataset.get(position).getTime();
         String description = mDataset.get(position).getDescription();
 
         holder.title.setText(time);

@@ -1,4 +1,4 @@
-package com.example.ming.newcards;
+package com.weather.ming.newcards;
 
 import android.util.Log;
 
@@ -81,7 +81,7 @@ public class GetServiceData {
     {
         ArrayList<Forcast> fList = new ArrayList<Forcast>();
         try {
-            String weather = "http://api.openweathermap.org/data/2.5/forecast?q=" + location + "&mode=json&appid=" + weather_api_key;
+            String weather = "http://api.openweathermap.org/data/2.5/forecast?q=" + location + "&mode=json&units=metric&appid=" + weather_api_key;
             JSONObject forcast = getJSON(weather);
             JSONArray forcastArray = null;
 
@@ -96,8 +96,14 @@ public class GetServiceData {
 
                 String weatherDescription = forcastArray.getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("description");
                 Double temp = dayForcast.getJSONObject("main").getDouble("temp");
+                Double min = dayForcast.getJSONObject("main").getDouble("temp_min");
+                Double max = dayForcast.getJSONObject("main").getDouble("temp_max");
                 f.weatherDescription = weatherDescription;
+                String icon = dayForcast.getJSONArray("weather").getJSONObject(0).getString("icon");
                 f.day = temp;
+                f.min = min;
+                f.max = max;
+                f.weatherIcon = icon;
                 fList.add(f);
             }
         }

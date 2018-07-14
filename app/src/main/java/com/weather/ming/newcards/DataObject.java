@@ -1,8 +1,5 @@
-package com.example.ming.newcards;
+package com.weather.ming.newcards;
 
-import android.graphics.drawable.Drawable;
-
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -21,8 +18,9 @@ public class DataObject {
     private double day;
     private double min;
     private double max;
+    private String mode;
 
-    DataObject(Date date, double day, double min, double max, String main, String description, String icon)
+    DataObject(Date date, double day, double min, double max, String main, String description, String icon, String mode)
     {
         this.date = date;
 
@@ -32,27 +30,27 @@ public class DataObject {
         this.description = description;
         this.icon = icon;
         this.main = main;
+        this.mode = mode;
         //this.fahrenheit = (this.kelvin - 273.15) * 9.0/5 + 32;
         //this.celcius = (this.kelvin - 273.15);
     }
 
     public String getTime()
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE h:mm a"); // the format of your date
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC-5")); // give a timezone reference for formating (see comment at the bottom
-        String formattedDate = sdf.format(date);
-        return formattedDate;
+        if (this.mode == Constants.Hours) {
+            SimpleDateFormat sdf = new SimpleDateFormat("EEEE h:mm a"); // the format of your date
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC-5")); // give a timezone reference for formating (see comment at the bottom
+            String formattedDate = sdf.format(date);
+            return formattedDate;
+        }
+        else
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("EEEE M-dd"); // the format of your date
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC-5")); // give a timezone reference for formating (see comment at the bottom
+            String formattedDate = sdf.format(date);
+            return formattedDate;
+        }
     }
-
-    public String getDay()
-    {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE M-dd"); // the format of your date
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC-5")); // give a timezone reference for formating (see comment at the bottom
-        String formattedDate = sdf.format(date);
-        return formattedDate;
-    }
-
-
 
     public String getDescription()
     {
