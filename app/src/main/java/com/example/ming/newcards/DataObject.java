@@ -1,6 +1,10 @@
 package com.example.ming.newcards;
 
+import android.graphics.drawable.Drawable;
+
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -9,20 +13,27 @@ public class DataObject {
     private String mText1;
     private String mText2;
     private Date date;
-    private String weatherDescription;
 
-    private double kelvin;
-    private double celcius;
-    private double fahrenheit;
+    private String main;
+    private String description;
+    private String icon;
 
-    DataObject(Date date, double kelvin, String weatherDescription)
+    private double day;
+    private double min;
+    private double max;
+
+    DataObject(Date date, double day, double min, double max, String main, String description, String icon)
     {
         this.date = date;
-        this.kelvin = kelvin;
-        this.weatherDescription = weatherDescription;
 
-        this.fahrenheit = (this.kelvin - 273.15) * 9.0/5 + 32;
-        this.celcius = (this.kelvin - 273.15);
+        this.day = (int) (day * 9.0/5 + 32);
+        this.min = (int) (min * 9.0/5 + 32);
+        this.max = (int) (max * 9.0/5 + 32);
+        this.description = description;
+        this.icon = icon;
+        this.main = main;
+        //this.fahrenheit = (this.kelvin - 273.15) * 9.0/5 + 32;
+        //this.celcius = (this.kelvin - 273.15);
     }
 
     public String getTime()
@@ -33,21 +44,48 @@ public class DataObject {
         return formattedDate;
     }
 
-    public String getTemp(int tempFormat) {
-        String temp = "";
-
-        if (tempFormat == 1)
-            temp = "K: " + Double.toString(kelvin);
-        else if (tempFormat == 2)
-            temp = "C: " + Double.toString(celcius);
-        else if (tempFormat == 3)
-            temp = "F: " + Double.toString(fahrenheit);
-
-        return temp;
-    }
-
-    public String getWeatherDescription()
+    public String getDay()
     {
-        return this.weatherDescription;
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE M-dd"); // the format of your date
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC-5")); // give a timezone reference for formating (see comment at the bottom
+        String formattedDate = sdf.format(date);
+        return formattedDate;
     }
+
+
+
+    public String getDescription()
+    {
+        return this.description + "\n" + "Day: " + getDayTemp() + " Max: " + getMaxTemp() + " Min: " + getMinTemp();
+    }
+
+    public String getDayTemp()
+    {
+        NumberFormat nf = DecimalFormat.getInstance();
+        nf.setMaximumFractionDigits(0);
+        String str = nf.format(this.day);
+        return str;
+    }
+
+    public String getMaxTemp()
+    {
+        NumberFormat nf = DecimalFormat.getInstance();
+        nf.setMaximumFractionDigits(0);
+        String str = nf.format(this.max);
+        return str;
+    }
+
+    public String getMinTemp()
+    {
+        NumberFormat nf = DecimalFormat.getInstance();
+        nf.setMaximumFractionDigits(0);
+        String str = nf.format(this.min);
+        return str;
+    }
+
+    public String getIcon()
+    {
+        return this.icon;
+    }
+
 }
