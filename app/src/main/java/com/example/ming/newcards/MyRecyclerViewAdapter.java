@@ -38,6 +38,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
             title = (TextView) itemView.findViewById(R.id.date);
             detail = (TextView) itemView.findViewById(R.id.description);
             picture = (ImageView) itemView.findViewById(R.id.picture);
+
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }

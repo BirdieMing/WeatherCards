@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 //TODO enter place. Dynamically load images. Half day skip.
 //TODO notification for rain or snow

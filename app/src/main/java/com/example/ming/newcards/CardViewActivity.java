@@ -18,19 +18,15 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.SubMenu;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 public class CardViewActivity extends AppCompatActivity {
 
@@ -46,6 +42,7 @@ public class CardViewActivity extends AppCompatActivity {
     CardListFragment listFragment = new CardListFragment();
     private int interval = 7;
     private String mode = Constants.Days;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +114,13 @@ public class CardViewActivity extends AppCompatActivity {
         location_txt.setAdapter(adapter);
         location_txt.clearFocus();
         //Clear focus
+
+        MobileAds.initialize(this,
+                "ca-app-pub-3664977011511772~8336923700");
+
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     private void AddListFragment() {
