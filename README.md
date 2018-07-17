@@ -9,3 +9,7 @@ https://www.amcharts.com/free-animated-svg-weather-icons/
 Add icon to action bar and icon instead of GO?
 
 Autocomplete text search?
+
+Get ads to work
+
+Hide keyboard after go
