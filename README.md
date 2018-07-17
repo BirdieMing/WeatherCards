@@ -13,3 +13,7 @@ Autocomplete text search?
 Get ads to work
 
 Hide keyboard after go
+
+Center icons, add padding between cards
+
+Save location to shared preferences
