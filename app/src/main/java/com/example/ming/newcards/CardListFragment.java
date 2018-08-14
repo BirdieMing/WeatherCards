@@ -13,24 +13,18 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Date;
 
-//TODO enter place. Dynamically load images. Half day skip.
-//TODO notification for rain or snow
-//Textbox for city
-//Language
-//10 days forcast
-
 public class CardListFragment extends Fragment {
 
     private ArrayList<DataObject> listObject;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private MyRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     String LOG_TAG = "CardListFragment";
     String mode = Constants.Days;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        listObject = getDataSet("Malden,us", "Day");
+        listObject = new ArrayList<DataObject>();//= getDataSet("Malden,us", "Day");
         super.onCreate(savedInstanceState);
     }
 
@@ -46,16 +40,6 @@ public class CardListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new MyRecyclerViewAdapter(listObject, getActivity(), getContext(), mode);
         mRecyclerView.setAdapter(mAdapter);
-
-
-
-
-        // Code to Add an item with default animation
-        //((MyRecyclerViewAdapter) mAdapter).addItem(obj, index);
-
-        // Code to remove an item with default animation
-        //((MyRecyclerViewAdapter) mAdapter).deleteItem(index);
-        // Inflate the layout for this fragment
         return rootView;
     }
 
@@ -64,6 +48,7 @@ public class CardListFragment extends Fragment {
         this.mode = mode;
         listObject.clear();
         listObject.addAll(getDataSet(location, mode));
+        mAdapter.SetMode(mode);
         mAdapter.notifyDataSetChanged();
     }
 

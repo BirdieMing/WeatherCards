@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -20,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.SubMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
@@ -27,6 +30,14 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class CardViewActivity extends AppCompatActivity {
 
@@ -43,10 +54,43 @@ public class CardViewActivity extends AppCompatActivity {
     private int interval = 7;
     private String mode = Constants.Days;
     private AdView mAdView;
+    private String locationKey = "com.example.ming.newcards.location";
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        AutoCompleteTextView location_txt = (AutoCompleteTextView) findViewById(R.id.location_textbox);
+        String location = location_txt.getText().toString();
+        if (location != "")
+            Refresh();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        AutoCompleteTextView location_txt = (AutoCompleteTextView) findViewById(R.id.location_textbox);
+        String location = location_txt.getText().toString();
+
+        if (location =="")
+            return;
+
+        SharedPreferences prefs = this.getSharedPreferences(
+                "com.example.ming.newcards", Context.MODE_PRIVATE);
+
+        prefs.edit().putString(locationKey, location).apply();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = this.getSharedPreferences(
+                "com.example.ming.newcards", Context.MODE_PRIVATE);
+
+        String location = prefs.getString(locationKey, "");
+
         setContentView(R.layout.activity_card_view);
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -81,23 +125,9 @@ public class CardViewActivity extends AppCompatActivity {
             AddListFragment();
 
         }
-
+        ArrayList<String> cities = LoadCities();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, COUNTRIES);
-
-//        AutoCompleteTextView textView = (AutoCompleteTextView)
-//                findViewById(R.id.location_textbox);
-//
-//        textView.setOnKeyListener(new View.OnKeyListener() {
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                // If the event is a key-down event on the "enter" button
-//                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-//                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
-//                    Refresh();
-//                }
-//                return false;
-//            }
-//        });
+                android.R.layout.simple_dropdown_item_1line, cities);
 
         AutoCompleteTextView location_txt = (AutoCompleteTextView) findViewById(R.id.location_textbox);
         location_txt.setOnEditorActionListener(new TextView.OnEditorActionListener()
@@ -112,15 +142,23 @@ public class CardViewActivity extends AppCompatActivity {
         );
 
         location_txt.setAdapter(adapter);
+        location_txt.setText(location);
         location_txt.clearFocus();
         //Clear focus
+
+        if (location != "")
+            Refresh();
 
         MobileAds.initialize(this,
                 "ca-app-pub-3664977011511772~8336923700");
 
-        mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        //mAdView = (AdView) findViewById(R.id.adView);
+        //AdRequest adRequest = new AdRequest.Builder().build();
+        //mAdView.loadAd(adRequest);
+    }
+
+    public void GoClick(View view) {
+        Refresh();
     }
 
     private void AddListFragment() {
@@ -128,11 +166,6 @@ public class CardViewActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, listFragment, List_TAG);
         fragmentTransaction.commit();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -195,12 +228,45 @@ public class CardViewActivity extends AppCompatActivity {
         }
     }
 
-    private static final String[] COUNTRIES = new String[] {
-            "Malden,us"
-    };
+    public String loadJSONFromAsset(String fileName) {
+        String json = null;
+        try {
+            InputStream is = getAssets().open(fileName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (Exception ex) {
+            Log.d(Constants.ErrorTag, ex.getMessage());
+            return null;
+        }
+        return json;
+    }
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    private String imageFileKey;
-    private String imageFilePath;
-    //Dispatch intent from child class?
+    public ArrayList<String> LoadCities()
+    {
+        ArrayList<String> cities = new ArrayList<String>();
+        try {
+            JSONObject jObject = new JSONObject(loadJSONFromAsset("US_States_and_Cities.json"));
+
+            Iterator<?> keys = jObject.keys();
+
+            while( keys.hasNext() ) {
+                String key = (String)keys.next();
+                if ( jObject.get(key) instanceof JSONArray ) {
+                    JSONArray jArray = (JSONArray) jObject.get(key);
+
+                    for(int i = 0; i < jArray.length(); i++) {
+                        cities.add((String) jArray.get(i));
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+            Log.d(Constants.ErrorTag, e.getMessage());
+        }
+
+        return cities;
+    }
 }
