@@ -1,4 +1,4 @@
-package com.example.ming.newcards;
+package com.weather.ming.newcards;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class CardListFragment extends Fragment {
 
@@ -47,8 +46,10 @@ public class CardListFragment extends Fragment {
     {
         this.mode = mode;
         listObject.clear();
-        listObject.addAll(getDataSet(location, mode));
         mAdapter.SetMode(mode);
+        ArrayList<DataObject> newList = getDataSet(location, mode);
+        listObject.addAll(newList);
+
         mAdapter.notifyDataSetChanged();
     }
 
@@ -65,7 +66,7 @@ public class CardListFragment extends Fragment {
 
         for (int index = 0; index < fList.size(); index++) {
             Forcast f = fList.get(index);
-            DataObject d = new DataObject(f.time, f.day, f.min, f.max, f.weatherMain, f.weatherDescription, f.weatherIcon);
+            DataObject d = new DataObject(f.time, f.day, f.min, f.max, f.weatherMain, f.weatherDescription, f.weatherIcon, mode);
             results.add(index, d);
         }
         return results;

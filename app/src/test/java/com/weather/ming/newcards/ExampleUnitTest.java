@@ -1,4 +1,4 @@
-package com.example.ming.newcards;
+package com.weather.ming.newcards;
 
 import org.junit.Test;
 

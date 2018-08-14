@@ -1,4 +1,4 @@
-package com.example.ming.newcards;
+package com.weather.ming.newcards;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -8,17 +8,12 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Debug;
-import android.os.Environment;
 import android.os.StrictMode;
-import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.SubMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -171,7 +166,7 @@ public class CardViewActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menu.add(0, 1, 0, "Refresh");
+        //menu.add(0, 1, 0, "Refresh");
         SubMenu sMenu0 = menu.addSubMenu(0, 2, 0, "Mode");
         sMenu0.add(0, 3, 0, "Day");
         sMenu0.add(0, 4, 0, "Hourly");
@@ -209,6 +204,11 @@ public class CardViewActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void goClick(View view)
+    {
+        Refresh();
+    }
+
     public void Refresh() {
 
         try {
@@ -216,6 +216,9 @@ public class CardViewActivity extends AppCompatActivity {
                     findViewById(R.id.location_textbox);
 
             String location = (String) textView.getText().toString();
+
+            if (!location.contains(",us"))
+                location = location + ",us";
 
             if (location == "")
                 return;

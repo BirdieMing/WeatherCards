@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Open Weather</string>
+    <string name="app_name">Simple Weather</string>
+    <string name="action_clear">Clear Cards</string>
 </resources>

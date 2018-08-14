@@ -1,4 +1,4 @@
-package com.example.ming.newcards;
+package com.weather.ming.newcards;
 
 import android.app.Activity;
 import android.content.Context;
