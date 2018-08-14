@@ -59,6 +59,11 @@ public class MyRecyclerViewAdapter extends RecyclerView
         this.mode = mode;
     }
 
+    public void SetMode(String mode)
+    {
+        this.mode = mode;
+    }
+
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {

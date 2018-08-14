@@ -27,11 +27,18 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     @SmallTest
     public void testMethod()
     {
+
         GetServiceData data = new GetServiceData();
 
         try { data.GetForcast("Malden, us", Constants.Hours);}
         catch(Exception e)
         { e.getMessage(); }
+    }
+
+    public void testJson()
+    {
+        CardViewActivity a = new CardViewActivity();
+        a.LoadCities();
     }
 
 }

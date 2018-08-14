@@ -12,24 +12,18 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-//TODO enter place. Dynamically load images. Half day skip.
-//TODO notification for rain or snow
-//Textbox for city
-//Language
-//10 days forcast
-
 public class CardListFragment extends Fragment {
 
     private ArrayList<DataObject> listObject;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private MyRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     String LOG_TAG = "CardListFragment";
     String mode = Constants.Days;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        listObject = getDataSet("Malden,us", "Day");
+        listObject = new ArrayList<DataObject>();//= getDataSet("Malden,us", "Day");
         super.onCreate(savedInstanceState);
     }
 
@@ -52,8 +46,10 @@ public class CardListFragment extends Fragment {
     {
         this.mode = mode;
         listObject.clear();
+        mAdapter.SetMode(mode);
         ArrayList<DataObject> newList = getDataSet(location, mode);
         listObject.addAll(newList);
+
         mAdapter.notifyDataSetChanged();
     }
 
