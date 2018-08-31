@@ -18,7 +18,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         .Adapter<MyRecyclerViewAdapter
         .DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewAdapter";
-    private ArrayList<DataObject> mDataset;
+    private ArrayList<ForcastObject> mDataset;
     private static MyClickListener myClickListener;
     private Activity act;
     private Context con;
@@ -52,7 +52,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         this.myClickListener = myClickListener;
     }
 
-    public MyRecyclerViewAdapter(ArrayList<DataObject> myDataset, Activity act, Context context, String mode) {
+    public MyRecyclerViewAdapter(ArrayList<ForcastObject> myDataset, Activity act, Context context, String mode) {
         mDataset = myDataset;
         this.act = act;
         this.con = context;
@@ -78,13 +78,13 @@ public class MyRecyclerViewAdapter extends RecyclerView
     public void onBindViewHolder(DataObjectHolder holder, int position) {
 
         String time = "";
-        time = mDataset.get(position).getTime();
-        String description = mDataset.get(position).getDescription();
+        time = mDataset.get(position).GetTime();
+        String description = mDataset.get(position).GetDescription();
 
         holder.title.setText(time);
         holder.detail.setText(description);
 
-        String icon = mDataset.get(position).getIcon();
+        String icon = mDataset.get(position).GetIcon();
         int iconNum = -1;
         switch (icon)
         {
@@ -117,7 +117,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         holder.picture.setImageDrawable(d);
     }
 
-    public void addItem(DataObject dataObj, int index) {
+    public void addItem(ForcastObject dataObj, int index) {
         mDataset.add(index, dataObj);
         notifyItemInserted(index);
     }

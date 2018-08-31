@@ -9,11 +9,15 @@ import java.util.Date;
 public class Forcast {
 
     public double day;
-    public double precipitation;
+    public double night;
     public String weatherDescription;
     public String weatherMain;
     public String weatherIcon;
     public Date time;
+    public double temp;
     public double min;
     public double max;
+    public int humidity;
+    public double windSpeed;
+    public double windDirection;
 }

@@ -1,5 +1,6 @@
 package com.weather.ming.newcards;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -18,6 +19,7 @@ import android.view.SubMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
@@ -33,12 +35,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
+/*
+TODO:
+Location not Saving
+Keystore, key0
+Truncate decimal in temp
+ */
 public class CardViewActivity extends AppCompatActivity {
-
-    //TODO: Add place search text box
-    //Debug: Load picture button
-    //Manage picture screen?
 
     private static String LOG_TAG = "CardViewActivity";
     private static String List_TAG = "ListTag";
@@ -129,8 +132,6 @@ public class CardViewActivity extends AppCompatActivity {
                                                {
                                                    @Override
                                                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                                                       String location = v.getText().toString();
-                                                       Refresh();
                                                        return true;
                                                    }
                                                }
@@ -139,13 +140,11 @@ public class CardViewActivity extends AppCompatActivity {
         location_txt.setAdapter(adapter);
         location_txt.setText(location);
         location_txt.clearFocus();
-        //Clear focus
 
         if (location != "")
             Refresh();
 
-        MobileAds.initialize(this,
-                "ca-app-pub-3664977011511772~8336923700");
+        //MobileAds.initialize(this,"ca-app-pub-3664977011511772~8336923700");
 
         //mAdView = (AdView) findViewById(R.id.adView);
         //AdRequest adRequest = new AdRequest.Builder().build();
@@ -154,6 +153,18 @@ public class CardViewActivity extends AppCompatActivity {
 
     public void GoClick(View view) {
         Refresh();
+        this.hideKeyboard(this);
+    }
+
+    public void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private void AddListFragment() {
@@ -171,6 +182,7 @@ public class CardViewActivity extends AppCompatActivity {
         sMenu0.add(0, 3, 0, "Day");
         sMenu0.add(0, 4, 0, "Hourly");
 
+        SubMenu sMenu5 = menu.addSubMenu(0, 5, 0, "Exit");
         //SubMenu sMenu1 = menu.addSubMenu(0, 8, 0, "Customize picture for weather");
         ///sMenu1.add(0, 9, 0, "clear sky");
 
@@ -195,6 +207,9 @@ public class CardViewActivity extends AppCompatActivity {
             case 4:
                 this.mode = Constants.Hours;
                 Refresh();
+                return true;
+            case 5:
+                System.exit(0);
                 return true;
             default:
                 Log.d("Menu Selection", "missing case " + item.getItemId());

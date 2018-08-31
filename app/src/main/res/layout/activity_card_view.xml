@@ -30,19 +30,19 @@
 
         <android.support.v7.widget.AppCompatAutoCompleteTextView
             android:id="@+id/location_textbox"
-            android:layout_width="fill_parent"
+            android:layout_width="283dp"
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/adView"
             android:layout_alignParentTop="true"
-            android:layout_marginEnd="67dp" />
+            android:layout_marginEnd="69dp" />
 
         <Button
             android:id="@+id/button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/location_textbox"
+            android:layout_marginStart="-69dp"
+            android:layout_toEndOf="@+id/location_textbox"
             android:onClick="goClick"
             android:text="Go" />
 
@@ -63,16 +63,6 @@
             ads:adSize="BANNER"
             ads:adUnitId="ca-app-pub-3664977011511772/7905447357">
         </com.google.android.gms.ads.AdView>
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:onClick="GoClick"
-            android:text="Go" />
-
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

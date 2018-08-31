@@ -5,6 +5,8 @@ import android.test.ApplicationTestCase;
 import android.util.Log;
 import android.test.suitebuilder.annotation.SmallTest;
 
+import java.util.ArrayList;
+
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
@@ -25,14 +27,33 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     }
 
     @SmallTest
-    public void testMethod()
+    public void testDay()
     {
 
         GetServiceData data = new GetServiceData();
 
-        try { data.GetForcast("Malden, us", Constants.Hours);}
+        try {
+            ArrayList<Forcast> result = data.GetForcast("Malden, us", Constants.Days);
+        }
         catch(Exception e)
-        { e.getMessage(); }
+        {
+            e.getMessage();
+        }
+    }
+
+    @SmallTest
+    public void testHour()
+    {
+
+        GetServiceData data = new GetServiceData();
+
+        try {
+            ArrayList<Forcast> result = data.GetForcast("Malden, us", Constants.Hours);
+        }
+        catch(Exception e)
+        {
+            e.getMessage();
+        }
     }
 
     public void testJson()

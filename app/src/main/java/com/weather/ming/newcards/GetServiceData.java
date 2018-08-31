@@ -27,9 +27,9 @@ public class GetServiceData {
     }
 
     public ArrayList<Forcast> GetForcast(String location, String mode)  {
-        if (mode == Constants.Hours)
+        if (mode.equals(Constants.Hours))
             return GetHourlyForcast(location);
-        else if (mode == Constants.Days)
+        else if (mode.equals(Constants.Days))
             return GetDayForcast(location);
         else
             return new ArrayList<Forcast>();
@@ -52,20 +52,30 @@ public class GetServiceData {
                 Forcast f = new Forcast();
                 Date date = new Date(dt * 1000L); // *1000 is to convert seconds to milliseconds
                 f.time = date;
+                JSONObject weatherJSON = dayForcast.getJSONArray("weather").getJSONObject(0);
+                String weatherMain = weatherJSON.getString("main");
+                String weatherDescription = weatherJSON.getString("description");
+                String weatherIcon = weatherJSON.getString("icon");
+                JSONObject tempJSON = dayForcast.getJSONObject("temp");
+                Double day = tempJSON.getDouble("day");
+                Double night = tempJSON.getDouble("night");
+                Double min = tempJSON.getDouble("min");
+                Double max = tempJSON.getDouble("max");
+                int humidity =  dayForcast.getInt("humidity");
+                double windSpeed = dayForcast.getDouble("speed");
+                double windDirection = dayForcast.getDouble("deg");
 
-                String weatherMain = dayForcast.getJSONArray("weather").getJSONObject(0).getString("main");
-                String weatherDescription = dayForcast.getJSONArray("weather").getJSONObject(0).getString("description");
-                String weatherIcon = dayForcast.getJSONArray("weather").getJSONObject(0).getString("icon");
-                Double day = dayForcast.getJSONObject("temp").getDouble("day");
-                Double min = dayForcast.getJSONObject("temp").getDouble("min");
-                Double max = dayForcast.getJSONObject("temp").getDouble("max");
                 f.weatherDescription = weatherDescription;
                 f.day = day;
+                f.night = night;
                 f.min = min;
                 f.max = max;
                 f.weatherMain = weatherMain;
                 f.weatherDescription = weatherDescription;
                 f.weatherIcon = weatherIcon;
+                f.humidity = humidity;
+                f.windSpeed = windSpeed;
+                f.windDirection = windDirection;
                 fList.add(f);
             }
         }
@@ -88,22 +98,29 @@ public class GetServiceData {
             forcastArray = forcast.getJSONArray("list");
 
             for (int i = 0; i < forcastArray.length(); i++) {
-                JSONObject dayForcast = forcastArray.getJSONObject(i);
-                int dt = dayForcast.getInt("dt");
+                JSONObject hourForcast = forcastArray.getJSONObject(i);
+                int dt = hourForcast.getInt("dt");
                 Forcast f = new Forcast();
                 Date date = new Date(dt * 1000L); // *1000 is to convert seconds to milliseconds
                 f.time = date;
 
                 String weatherDescription = forcastArray.getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("description");
-                Double temp = dayForcast.getJSONObject("main").getDouble("temp");
-                Double min = dayForcast.getJSONObject("main").getDouble("temp_min");
-                Double max = dayForcast.getJSONObject("main").getDouble("temp_max");
+                String icon = hourForcast.getJSONArray("weather").getJSONObject(0).getString("icon");
+                JSONObject mainJson = hourForcast.getJSONObject("main");
+                double temp = mainJson.getDouble("temp");
+                double min = mainJson.getDouble("temp_min");
+                double max = mainJson.getDouble("temp_max");
+                int humidity = mainJson.getInt("humidity");
+                double windSpeed = hourForcast.getJSONObject("wind").getDouble("speed");
+                double windDirection = hourForcast.getJSONObject("wind").getDouble("deg");
                 f.weatherDescription = weatherDescription;
-                String icon = dayForcast.getJSONArray("weather").getJSONObject(0).getString("icon");
-                f.day = temp;
+                f.temp = temp;
                 f.min = min;
                 f.max = max;
                 f.weatherIcon = icon;
+                f.humidity = humidity;
+                f.windSpeed = windSpeed;
+                f.windDirection = windDirection;
                 fList.add(f);
             }
         }
